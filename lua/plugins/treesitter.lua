@@ -2,7 +2,9 @@
 return {
   -- The plugin specification
   "nvim-treesitter/nvim-treesitter",
-
+  lazy = false,
+  branch = 'main',
+  build = ':TSUpdate',
   -- The config function for setting up the plugin
   config = function()
     require('nvim-treesitter.configs').setup({
