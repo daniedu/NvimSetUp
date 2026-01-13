@@ -7,12 +7,12 @@ return {
   build = ':TSUpdate',
   -- The config function for setting up the plugin
   config = function()
-    require('nvim-treesitter.configs').setup({
+    require('nvim-treesitter.config').setup({
       -- A list of languages to install.
       -- You can add or remove languages you work with here.
       ensure_installed = {
         "c",
-        "c_sharp",
+        -- "c_sharp",
         "lua",
         "vim",
         "vimdoc",
@@ -23,6 +23,7 @@ return {
         "typescript",
         "json",
         "yaml",
+        "jsx",
         "tsx",
         "html",
         "css",
