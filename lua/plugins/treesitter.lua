@@ -1,60 +1,40 @@
--- lua/plugins/treesitter.lua
 return {
-  -- The plugin specification
-  "nvim-treesitter/nvim-treesitter",
-  lazy = false,
-  branch = 'main',
-  build = ':TSUpdate',
-  -- The config function for setting up the plugin
-  config = function()
-    require('nvim-treesitter.config').setup({
-      -- A list of languages to install.
-      -- You can add or remove languages you work with here.
-      ensure_installed = {
-        "c",
-        -- "c_sharp",
-        "lua",
-        "vim",
-        "vimdoc",
-        "bash",
-        "markdown",
-        "jsdoc",
-        "javascript",
-        "typescript",
-        "json",
-        "yaml",
-        "jsx",
-        "tsx",
-        "html",
-        "css",
-      },
-
-      -- Install languages synchronously (only applied when `ensure_installed` is changed)
-      sync_install = false,
-
-      -- Automatically install missing parsers when you open a file of that type
-      auto_install = true,
-
-      -- Enable syntax highlighting
-      highlight = {
-        enable = true,
-      },
-
-      -- Enable indentation
-      indent = {
-        enable = true,
-      },
-
-      -- You can also enable incremental selection
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = '<leader>si',
-          node_incremental = '<leader>sn',
-          scope_incremental = '<leader>ss',
-          node_decremental = '<leader>sd',
-        },
-      },
-    })
-  end,
+	"nvim-treesitter/nvim-treesitter",
+	lazy = false,
+	version = false, -- usa el master de treesitter
+	build = ":TSUpdate",
+	-- Usamos eventos nativos para evitar el error anterior
+	event = { "BufReadPost", "BufNewFile", "VeryLazy" },
+	config = function()
+		local configs = require("nvim-treesitter.config")
+		configs.setup({
+			-- Ensure these are installed
+			ensure_installed = {
+				"lua",
+				"vim",
+				"vimdoc",
+				"query",
+				"javascript",
+				"python",
+				"typescript",
+				"tsx",
+				"html",
+				"css",
+				"scss",
+				"php",
+				"php_only",
+				"json",
+				"jsonc",
+				"yaml",
+				"markdown",
+				"markdown_inline",
+				"bash",
+				"dockerfile",
+				"regex",
+				"sql",
+			},
+			highlight = { enable = true, additional_vim_regex_highlighting = false }, -- You MUST explicitly enable this now
+			indent = { enable = true },
+		})
+	end,
 }

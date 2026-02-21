@@ -22,5 +22,24 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- Setup lazy.nvim
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    local function trigger()
+      vim.api.nvim_exec_autocmds("User", { pattern = "LazyFile" })
+    end
+
+    if vim.bo.filetype ~= "" then
+      trigger()
+    else
+      vim.api.nvim_create_autocmd("BufReadPost", {
+        once = true,
+        callback = trigger,
+      })
+    end
+  end,
+})
+
+require("deep-cherry.init").colorScheme()
 require("lazy").setup(require("plugins"))
+

@@ -1,61 +1,71 @@
-return {
-  -- The plugin specification
-  "nvim-lualine/lualine.nvim",
+-- 1. Functional Palette (Matches your main theme logic)
+local functional_colors = {
+    bg             = "NONE",    -- Keeping it transparent
+    text_main      = "#F2F0F7", -- High contrast for blurred bg
+    text_dim       = "#676B8D", 
+    dark_inner     = "#120B1A", -- For text inside the colored "pills"
+    
+    -- Mode-based colors
+    primary        = "#9575CD", -- Amethyst (Normal)
+    accent         = "#80DEEA", -- Cyan/Frost (Insert)
+    warning        = "#FFD180", -- Amber (Replace)
+    danger         = "#FF5252", -- Red (Visual / HTML Tag match)
+    command        = "#B388FF", -- Electric Purple (Command)
+}
 
-  -- The config function for setting up the plugin
-  config = function()
-    require('lualine').setup {
-      options = {
-        icons_enabled = true,
-        theme = 'auto',
-        component_separators = { left = '', right = '' },
-        section_separators = { left = '', right = '' },
-        disabled_filetypes = {
-          statusline = {},
-          winbar = {},
-        },
-        ignore_focus = {},
-        always_divide_middle = true,
-        globalstatus = false,
-        refresh = {
-          statusline = 1000,
-          tabline = 1000,
-          winbar = 1000,
-          refresh_time = 16, -- ~60fps
-          events = {
-            'WinEnter',
-            'BufEnter',
-            'BufWritePost',
-            'SessionLoadPost',
-            'FileChangedShellPost',
-            'VimResized',
-            'Filetype',
-            'CursorMoved',
-            'CursorMovedI',
-            'ModeChanged',
-          },
-        }
-      },
-      sections = {
-        lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff', 'diagnostics' },
-        lualine_c = { 'filename' },
-        lualine_x = { 'encoding', 'fileformat', 'filetype' },
-        lualine_y = { 'progress' },
-        lualine_z = { 'location' }
-      },
-      inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = { 'filename' },
-        lualine_x = { 'location' },
-        lualine_y = {},
-        lualine_z = {}
-      },
-      tabline = {},
-      winbar = {},
-      inactive_winbar = {},
-      extensions = {}
-    }
-  end,
+-- 2. Define the theme using functional keys
+local amethyst_functional_theme = {
+    normal = {
+        a = { fg = functional_colors.dark_inner, bg = functional_colors.primary, gui = 'bold' },
+        b = { fg = functional_colors.text_main,  bg = "#311B92" }, -- Deep purple contrast
+        c = { fg = functional_colors.text_main,  bg = "NONE" }, 
+    },
+    insert  = { a = { fg = functional_colors.dark_inner, bg = functional_colors.accent, gui = 'bold' } },
+    visual  = { a = { fg = functional_colors.dark_inner, bg = functional_colors.danger, gui = 'bold' } },
+    replace = { a = { fg = functional_colors.dark_inner, bg = functional_colors.warning, gui = 'bold' } },
+    command = { a = { fg = functional_colors.dark_inner, bg = functional_colors.command, gui = 'bold' } },
+    inactive = {
+        a = { fg = functional_colors.text_dim, bg = "NONE" },
+        b = { fg = functional_colors.text_dim, bg = "NONE" },
+        c = { fg = functional_colors.text_dim, bg = "NONE" },
+    },
+}
+
+-- 3. The Lazy.nvim plugin specification
+return {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+        require('lualine').setup({
+            options = {
+                theme = amethyst_functional_theme,
+                component_separators = '',
+                section_separators = '',
+                globalstatus = true,
+                disabled_filetypes = { statusline = { "alpha", "dashboard", "NvimTree" } },
+            },
+            sections = {
+                lualine_a = {
+                    { 'mode', separator = { left = '', right = '' }, right_padding = 2 },
+                },
+                lualine_b = {
+                    { 'branch', icon = '', separator = { left = '', right = '' } },
+                    { 'diff', separator = { right = '' } },
+                },
+                lualine_c = {
+                    { 'filename', file_status = true, path = 1 },
+                },
+                lualine_x = {
+                    { 'diagnostics', sources = { 'nvim_lsp' } },
+                    'encoding',
+                },
+                lualine_y = {
+                    { 'filetype', separator = { left = '' } },
+                },
+                lualine_z = {
+                    { 'location', separator = { left = '', right = '' } },
+                },
+            },
+        })
+    end
 }

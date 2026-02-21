@@ -29,11 +29,6 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = "Scroll half a page up" })
 vim.keymap.set('n', 'n', 'nzzzv', { desc = "Next search match, center view" })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = "Previous search match, center view" })
 
--- Window navigation (using Ctrl + h,j,k,l)
-vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = "Go to left window" })
-vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = "Go to lower window" })
-vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = "Go to upper window" })
-vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = "Go to right window" })
 
 -- ====================
 -- Telescope Mappings
@@ -84,17 +79,17 @@ vim.keymap.set('n', '<leader>tt', '<cmd>ToggleTerm<cr>', { desc = "Toggle Termin
 -- This section defines all keymaps for Harpoon actions.
 
 -- Add a file to the Harpoon list
-vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end, { desc = "Harpoon add file" })
+-- vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end, { desc = "Harpoon add file" })
 
 -- Toggle the quick menu
-vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon quick menu" })
+-- vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon quick menu" })
 
 -- Jump to files in the list
-vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end, { desc = "Harpoon select 1" })
-vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end, { desc = "Harpoon select 2" })
-vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end, { desc = "Harpoon select 3" })
-vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end, { desc = "Harpoon select 4" })
+-- vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end, { desc = "Harpoon select 1" })
+-- vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end, { desc = "Harpoon select 2" })
+-- vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end, { desc = "Harpoon select 3" })
+-- vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end, { desc = "Harpoon select 4" })
 
 -- Navigate the Harpoon list
-vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end, { desc = "Harpoon previous" })
-vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end, { desc = "Harpoon next" })
+-- vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end, { desc = "Harpoon previous" })
+-- vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end, { desc = "Harpoon next" })
