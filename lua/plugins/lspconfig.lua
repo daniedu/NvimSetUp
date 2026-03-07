@@ -1,67 +1,70 @@
 return {
-  "mason-org/mason-lspconfig.nvim",
-  lazy = false,
-  dependencies = {
-    "mason-org/mason.nvim",
-    "hrsh7th/cmp-nvim-lsp",
-  },
-  config = function()
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+	"neovim/nvim-lspconfig",
+	dependencies = {
+		"williamboman/mason.nvim",
+		"williamboman/mason-lspconfig.nvim",
+		"hrsh7th/cmp-nvim-lsp",
+	},
+	config = function()
+		-- 1. Setup default capabilities for nvim-cmp
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-    -- LSP keymaps on attach
-    vim.api.nvim_create_autocmd("LspAttach", {
-      callback = function(args)
-        local bufnr = args.buf
-        local map = function(keys, func, desc)
-          vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
-        end
+		-- 2. Configure servers via the NEW native vim.lsp.config API
+		-- This defines the "how", but doesn't start them yet.
 
-        map("gd", vim.lsp.buf.definition, "Go to definition")
-        map("gr", vim.lsp.buf.references, "Go to references")
-        map("gI", vim.lsp.buf.implementation, "Go to implementation")
-        map("gy", vim.lsp.buf.type_definition, "Go to type definition")
-        map("gD", vim.lsp.buf.declaration, "Go to declaration")
-        map("K", vim.lsp.buf.hover, "Hover documentation")
-        map("<leader>ca", vim.lsp.buf.code_action, "Code action")
-        map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
-        map("<leader>ds", vim.lsp.buf.document_symbol, "Document symbols")
-        map("<leader>ws", vim.lsp.buf.workspace_symbol, "Workspace symbols")
-      end,
-    })
+		-- TypeScript / React config
+		vim.lsp.config("ts_ls", {
+			capabilities = capabilities,
+			settings = {
+				typescript = { suggest = { autoImports = true } },
+				javascript = { suggest = { autoImports = true } },
+			},
+		})
 
-    -- Server-specific settings
-    vim.lsp.config("emmet_ls", {
-      filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "php" },
-    })
+		-- Lua config
+		vim.lsp.config("lua_ls", {
+			capabilities = capabilities,
+			settings = {
+				Lua = {
+					diagnostics = { globals = { "vim" } },
+					workspace = { checkThirdParty = false },
+				},
+			},
+		})
 
-    vim.lsp.config("lua_ls", {
-      settings = {
-        Lua = {
-          workspace = { checkThirdParty = false },
-          telemetry = { enable = false },
-          diagnostics = { globals = { "vim" } },
-        },
-      },
-    })
+		-- Emmet config
+		vim.lsp.config("emmet_ls", {
+			capabilities = capabilities,
+			filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "php" },
+		})
 
-    -- Set capabilities for all servers
-    vim.lsp.config("*", {
-      capabilities = capabilities,
-    })
+		-- 3. Setup Mason
+		require("mason").setup()
 
-    require("mason-lspconfig").setup({
-      ensure_installed = {
-        "ts_ls",
-        "intelephense",
-        "tailwindcss",
-        "html",
-        "cssls",
-        "emmet_ls",
-        "jsonls",
-        "lua_ls",
-      },
-      automatic_enable = true,
-    })
+		-- 4. Setup Mason-LSPConfig (v2.0.0+ way)
+		-- This is the "automatic_enable" that replaces the old handlers logic.
+		require("mason-lspconfig").setup({
+			ensure_installed = {
+				"ts_ls",
+				"tailwindcss",
+				"lua_ls",
+				"emmet_ls",
+				"html",
+				"cssls",
+			},
+			-- This is the magic line that replaces setup_handlers()
+			automatic_enable = true,
+		})
 
-  end,
+		-- 5. LSP Keymaps on attach
+		vim.api.nvim_create_autocmd("LspAttach", {
+			callback = function(args)
+				local opts = { buffer = args.buf }
+				vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+			end,
+		})
+	end,
 }

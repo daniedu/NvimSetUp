@@ -1,82 +1,38 @@
--- lua/core/keymaps.lua
-
 -- ====================
 -- General Keymaps
 -- ====================
 
--- Save the current file
-vim.keymap.set('n', '<C-s>', ':w<cr>', { desc = "Save file" })
+vim.keymap.set("n", "<C-s>", ":w<cr>", { desc = "Save file" })
 
--- Quit Neovim (using a common mapping, 'leader' + 'q')
-vim.keymap.set('n', '<leader>q', ':qa<cr>', { desc = "Quit all buffers" })
-vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
+vim.keymap.set("n", "<leader>qa", ":qa<cr>", { desc = "Quit all buffers" })
+vim.keymap.set("n", "<leader>qq", ":q<cr>", { desc = "Quit current buffers" })
 
 -- Clear search highlights
-vim.keymap.set('n', '<leader>nh', ':nohl<cr>', { desc = "Clear search highlights" })
-
--- Make a window or split fullscreen
-vim.keymap.set('n', '<leader>z', ':MaximizerToggle<cr>', { desc = "Toggle maximize window" })
+vim.keymap.set("n", "<leader>nh", ":nohl<cr>", { desc = "Clear search highlights" })
 
 -- ====================
 -- Movement and Window Management
 -- ====================
 
 -- Half-page movement
-vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = "Scroll half a page down" })
-vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = "Scroll half a page up" })
+vim.keymap.set("n", "<C-j>", "<C-d>zz", { desc = "Scroll half a page down" })
+vim.keymap.set("n", "<C-k>", "<C-u>zz", { desc = "Scroll half a page up" })
 
 -- Keep cursor in the center
-vim.keymap.set('n', 'n', 'nzzzv', { desc = "Next search match, center view" })
-vim.keymap.set('n', 'N', 'Nzzzv', { desc = "Previous search match, center view" })
-
-
--- ====================
--- Telescope Mappings
--- ====================
-
-local builtin = require('telescope.builtin')
-
--- Find files (your existing keymap)
-vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = "Find files" })
-
--- Custom Grep
-vim.keymap.set('n', '<leader>fs', function()
-  builtin.grep_string({ search = vim.fn.input("Grep >") })
-end, { desc = "Find files" })
-
--- Live Grep (search for a string in all files)
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = "Live Grep" })
-
--- Find files that are tracked by Git
-vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = "Find Git files" })
-
--- Show Git status
-vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = "Show Git status" })
-
--- Find recently opened files
-vim.keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = "Find recent files" })
-
--- Switch between open buffers
-vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = "Find open buffers" })
-
--- Search help tags
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = "Search help tags" })
+vim.keymap.set("n", "n", "nzzzv", { desc = "Next search match, center view" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search match, center view" })
 
 -- ====================
 -- Other common plugins
 -- ====================
 
 -- Toggle comment for a line
-vim.keymap.set('n', '<leader>/', '<Plug>(comment_toggle_linewise_normal)', { desc = "Toggle line comment" })
-vim.keymap.set('x', '<leader>/', '<Plug>(comment_toggle_linewise_visual)', { desc = "Toggle visual comment" })
-
--- Terminal toggle
-vim.keymap.set('n', '<leader>tt', '<cmd>ToggleTerm<cr>', { desc = "Toggle Terminal" })
+-- vim.keymap.set("n", "<leader>/", "<Plug>(comment_toggle_linewise_normal)", { desc = "Toggle line comment" })
+-- vim.keymap.set("x", "<leader>/", "<Plug>(comment_toggle_linewise_visual)", { desc = "Toggle visual comment" })
 
 -- =========================================================
 -- Harpoon Mappings
 -- =========================================================
--- This section defines all keymaps for Harpoon actions.
 
 -- Add a file to the Harpoon list
 -- vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end, { desc = "Harpoon add file" })
@@ -93,3 +49,20 @@ vim.keymap.set('n', '<leader>tt', '<cmd>ToggleTerm<cr>', { desc = "Toggle Termin
 -- Navigate the Harpoon list
 -- vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end, { desc = "Harpoon previous" })
 -- vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end, { desc = "Harpoon next" })
+
+-- ====================
+-- Fzf-lua Mappings
+-- ====================
+--
+local fzf = require("fzf-lua")
+
+-- Files & Buffers
+vim.keymap.set("n", "<leader>ff", fzf.files, { desc = "Fzf Files" })
+vim.keymap.set("n", "<leader>fb", fzf.buffers, { desc = "Fzf Buffers" })
+vim.keymap.set("n", "<leader>fh", fzf.help_tags, { desc = "Fzf Help" })
+vim.keymap.set("n", "<leader>fp", fzf.oldfiles, { desc = "Fzf Recent Files" })
+
+-- Search/Grep
+vim.keymap.set("n", "<leader>fw", fzf.grep_cword, { desc = "Fzf Word under cursor" })
+vim.keymap.set("n", "<leader>fg", fzf.live_grep, { desc = "Fzf Live Grep" })
+vim.keymap.set("n", "<leader>fz", fzf.blines, { desc = "Fzf Current Buffer Lines" })

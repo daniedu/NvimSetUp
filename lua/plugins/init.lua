@@ -4,7 +4,8 @@ return {
 	require("plugins.gitsigns"),
 	require("plugins.treesitter"),
 	require("plugins.lualine"),
-	require("plugins.telescope"),
+	--require("plugins.telescope"),
+	require("plugins.fzf_lua"),
 	require("plugins.conform"),
 	require("plugins.nvim-colorizer"),
 	require("plugins.vim-tmux-navigation"),
@@ -13,4 +14,5 @@ return {
 	require("plugins.nvim-autopairs"),
 	require("plugins.nvim-ts-autotag"),
 	require("plugins.yazzy"),
+	require("plugins.lazy_git"),
 }
