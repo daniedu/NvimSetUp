@@ -15,4 +15,6 @@ return {
 	require("plugins.nvim-ts-autotag"),
 	require("plugins.yazzy"),
 	require("plugins.lazy_git"),
+	require("plugins.dadbod"),
+	--require("plugins.mini-vim"),
 }
